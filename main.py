@@ -17,7 +17,6 @@ class AutoCodeGenerator:
         self.repo = self.g.get_repo(self.repo_name)
         openai.api_key = self.openai_key
 
-
     def analyze_coding_style(self, num_commits=50):
         """Analyze recent commits to understand coding patterns."""
         commits = list(self.repo.get_commits()[:num_commits])
@@ -134,14 +133,17 @@ class AutoCodeGenerator:
             print(f"Error during night cycle: {str(e)}")
 
 if __name__ == "__main__":
-    # Load configuration from config.json
-    with open('config.json', 'r') as config_file:
-        config = json.load(config_file)
+    # Get configuration from environment variables
+    github_token = os.getenv('GITHUB_TOKEN')
+    openai_key = os.getenv('OPENAI_API_KEY')
+    repo_name = os.getenv('REPO_NAME')
     
-    generator = AutoCodeGenerator(
-        github_token=config['github_token'],
-        openai_key=config['openai_key'],
-        repo_name=config['repo_name']
-    )
+    # Check if any of the required environment variables are missing
+    if not github_token or not openai_key or not repo_name:
+        raise ValueError("Missing required environment variables")
+
+    # Initialize the AutoCodeGenerator with the environment variables
+    generator = AutoCodeGenerator()
     
+    # Run the night cycle
     generator.run_night_cycle()
