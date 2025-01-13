@@ -44,7 +44,6 @@ class AutoCodeGenerator:
 
     def generate_improvements(self, file_content):
         """Generate code improvements based on analyzed patterns."""
-        client = OpenAI(api_key=self.openai_key)
         prompt = f"""
         Based on this code, suggest improvements while maintaining the same style:
         
@@ -53,11 +52,14 @@ class AutoCodeGenerator:
         Provide only the improved code without explanations.
         """
 
-        response = client.chat.completions.create(
+        # Ensure openai is the latest version before using this
+        response = openai.ChatCompletion.create(  # Correct method after update
             model="gpt-4",
             messages=[{"role": "user", "content": prompt}]
         )
-        return response.choices[0].message.content
+        
+        return response.choices[0].message['content']
+
 
     def create_pull_request(self, file_path, improvements):
         """Create a pull request with suggested improvements."""
