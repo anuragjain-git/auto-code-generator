@@ -57,6 +57,7 @@ class AutoCodeGenerator:
             return None  # Skip processing for this file
 
         with open(file_path, 'r') as file:
+            print(f"File found: {file_path}. Prompting.")
             current_code = file.read()
 
         prompt = f"""
