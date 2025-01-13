@@ -53,10 +53,11 @@ class AutoCodeGenerator:
         """
 
         # Ensure openai is the latest version before using this
-        response = openai.ChatCompletion.create(  # Correct method after update
-            model="gpt-4",
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",  # Use gpt-3.5-turbo as an alternative
             messages=[{"role": "user", "content": prompt}]
         )
+
         
         return response.choices[0].message['content']
 
